@@ -29,6 +29,7 @@ discord's new policy, I wanted to make this for anyone hoping to create their ow
 <h1> 📜 Terms of Serivce </h1>
 
 <h2> Restrictions </h2>
+
 **Do not use this service to harm others** The main purpose of this bot is to spit out a silly message someone might've sent. It's similar to when someone makes a typo and they get teased. Getting deleted messages may be fun with friends or people you feel comfortable around but privacy is also important.
 
 <h2> Termination </h2>
