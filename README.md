@@ -31,7 +31,7 @@ discord's new message content policy, I wanted to make this for anyone hoping to
 <h2> Restrictions </h2>
 
 **Do not use this service to harm others.** The main purpose of this bot is to spit out a silly message someone might've sent. It's similar to when someone makes a typo and they get teased. Getting deleted messages may be fun with friends or people you feel comfortable around but privacy is also important.
-
+<br>
 <h2> Termination </h2>
 You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people.
 
