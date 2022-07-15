@@ -20,6 +20,12 @@ This is where Elite Sniper comes in! Elite Sniper uses Discord's own API to capt
 
 
 
+<h1> 🤨 What is the purpose? </h1>
+
+There is a popular demand for snipe bots among users and since snipebots are nearing their end in terms of
+discord's new policy, I wanted to make this for anyone hoping to create their own snipebot for their server.
+
+
 <h1>🌍 Languages</h1>
 
 <li>English</li>
