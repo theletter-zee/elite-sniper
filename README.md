@@ -30,7 +30,7 @@ discord's new policy, I wanted to make this for anyone hoping to create their ow
 
 <h2> Restrictions </h2>
 
-**Do not use this service to harm others** The main purpose of this bot is to spit out a silly message someone might've sent. It's similar to when someone makes a typo and they get teased. Getting deleted messages may be fun with friends or people you feel comfortable around but privacy is also important.
+**Do not use this service to harm others.** The main purpose of this bot is to spit out a silly message someone might've sent. It's similar to when someone makes a typo and they get teased. Getting deleted messages may be fun with friends or people you feel comfortable around but privacy is also important.
 
 <h2> Termination </h2>
 You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people.
@@ -44,7 +44,10 @@ You’re free to opt out of getting your message sniped by another user at any t
 - Prefix
 - Language
 
-
+▫️ **Server id** <br>
+└ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **|** What do I use it for? **:**   <br>
+▫️ **User id** <br>
+└ 
 
 <h1>🌍 Languages</h1>
 
