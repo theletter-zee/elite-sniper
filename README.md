@@ -7,7 +7,7 @@ A basic discord snipe bot with custom prefix and language (español) support usi
 # Main Commands #
 ▫️ **:-getmsg** <br>
 └ Gets the most recently deleted `message` | alias: `snipe`, `resend` <br>
-▫️ **:-getedit** 
+▫️ **:-getedit** <br>
 └ Gets the most recently edited `message` | alias: `snipeedit`
 
 
