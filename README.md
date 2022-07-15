@@ -22,8 +22,8 @@ This is where Elite Sniper comes in! Elite Sniper uses Discord's own API to capt
 
 <h1> 🤨 What is the purpose? </h1>
 
-There is a popular demand for snipe bots among users and since snipebots are nearing their end in terms of
-discord's new policy, I wanted to make this for anyone hoping to create their own snipebot for their server.
+There is a popular demand for snipe bots among users and since snipe bots are nearing their end in terms of
+discord's new message content policy, I wanted to make this for anyone hoping to create their own snipe bot for their server.
 
 
 <h1> 📜 Terms of Serivce </h1>
@@ -45,7 +45,11 @@ You’re free to opt out of getting your message sniped by another user at any t
 └ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **| What do I use it for? :** (1) It shows me what servers are the most 'reliant' on the bot. It tells me if the servers that use this service are typically big or small. (2) Custom server prefixes tend to be the popular option and currently, I'm testing out individual prefixes. If I end up going with server prefixes then server id's is what i'd have to use. <br>
 
 ▫️ **User id** <br>
-└ Your user id is public to anyone that comes in contact with you or simply see you on their side menu. To get someone's user id you can enable it in the advanced settings. For developers, it's a great way to manage how you interact with their bot. **What do I use it for? :** I use it for assigning your custom prefix and your chosen language. 
+└ Your user id is public to anyone that comes in contact with you or simply see you on their side menu. To get someone's user id you can enable it in the advanced settings. For developers, it's a great way to manage how you interact with their bot. **What do I use it for? :** I use it for assigning your custom prefix and your chosen language. <br>
+
+**I do not store any of your messages** That would be a clear invasion of privacy, and I would get in trouble.
+
+
 
 <h1>🌍 Languages</h1>
 
