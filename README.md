@@ -45,7 +45,7 @@ You’re free to opt out of getting your message sniped by another user at any t
 - Language
 
 ▫️ **Server id** <br>
-└ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **|** What do I use it for? **:**   <br>
+└ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **| What do I use it for? :**   <br>
 ▫️ **User id** <br>
 └ 
 
