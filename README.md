@@ -4,12 +4,11 @@ A basic discord snipe bot with custom prefix and language (español) support usi
 <hr>
 
 
-# Commands Table #
-`:-getmsg`\n
+# Main Commands #
+`:-getmsg` <br>
 (Gets the most recently deleted message)
-`:-getedit`\n
+`:-getedit` <br>
 (Gets the most recently edited message)
-`:-settings`
 
 
 <h1> 🤔 How does it work? </h1>
