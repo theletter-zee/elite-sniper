@@ -6,9 +6,9 @@ A basic discord snipe bot with custom prefix and language (español) support usi
 
 # Main Commands #
 ▫️ **:-getmsg** 
-(Gets the most recently deleted message) <br>
-`:-getedit` 
-(Gets the most recently edited message)
+└ Gets the most recently deleted `message` | alias: `snipe`, `resend`<br>
+▫️ **:-getedit** 
+└ Gets the most recently edited `message` | alias: `snipeedit`
 
 
 <h1> 🤔 How does it work? </h1>
