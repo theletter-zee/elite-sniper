@@ -1,4 +1,4 @@
-# elite-sniper
+# Elite Sniper
 <img src="https://imgur.com/mwGHTPv.png" title="elitesniper toplogo"/>
 A basic discord snipe bot with custom prefix and language (español) support using discord.py 2.0a
 <hr>
