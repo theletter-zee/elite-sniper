@@ -3,6 +3,13 @@
 A basic discord snipe bot with custom prefix and language (español) support using discord.py 2.0a
 <hr>
 
+# Invites #
+
+https://top.gg/bot/800136653041303553
+
+https://discord.bots.gg/bots/800136653041303553
+
+
 # Support Server #
 
 https://discord.gg/k3mF2nhX3K
