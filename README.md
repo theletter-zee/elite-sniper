@@ -5,7 +5,7 @@ A basic discord snipe bot with custom prefix and language (español) support usi
 
 # Support Server #
 
-https://discord.gg/S8yA4T3F
+https://discord.gg/k3mF2nhX3K
 
 # Main Commands #
 ▫️ **:-getmsg** <br>
