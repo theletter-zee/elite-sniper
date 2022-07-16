@@ -3,6 +3,9 @@
 A basic discord snipe bot with custom prefix and language (español) support using discord.py 2.0a
 <hr>
 
+# Support Server #
+
+https://discord.gg/S8yA4T3F
 
 # Main Commands #
 ▫️ **:-getmsg** <br>
