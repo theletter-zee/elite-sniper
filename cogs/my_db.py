@@ -26,16 +26,17 @@ async def c_table():
         help INT,
         topgg BIT,
         bots BIT,
+        access INT,
         prefix VARCHAR(3),
         lang VARCHAR(2),
         PRIMARY KEY(user_id)
     ) """)
 
 
-async def insert_user(server_id, user_id, getmsg, getedit, help, topgg, bots, prefix=":-", lang="en"):
+async def insert_user(server_id, user_id, getmsg, getedit, help, topgg, bots, access, prefix=":-", lang="en"):
   async with get_db(f"{PATH}/data/users.db") as c:
-    c.execute("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (server_id, user_id, getmsg, getedit, help, topgg, bots, prefix, lang))
+    c.execute("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (server_id, user_id, getmsg, getedit, help, topgg, bots, access, prefix, lang,))
 
 
 
@@ -51,6 +52,10 @@ async def update_edit(usr_name):
 async def update_help(usr_name):
   async with get_db(f"{PATH}/data/users.db") as c:
     c.execute(f"UPDATE user SET help = help + 1  WHERE user_id = ?;", (usr_name,))
+
+async def update_access(usr_name, mode):
+  async with get_db(f"{PATH}/data/users.db") as c:
+    c.execute("UPDATE user SET access = ? WHERE user_id = ?;", (mode, usr_name,))
 
 async def update_prefix(usr_name, prefix):
   async with get_db(f"{PATH}/data/users.db") as c:
