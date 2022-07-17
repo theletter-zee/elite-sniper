@@ -60,7 +60,7 @@ class MyBot(commands.Bot):
     #Reset prefix
     if bot.user.mentioned_in(message) and message.content == f"{bot.user.mention} ..":
       try:
-        await db.insert_user(message.guild.id, message.author.id, 0, 0, 0, 0, 0, ":-", "en")
+        await db.insert_user(message.guild.id, message.author.id, 0, 0, 0, 0, 0, 1, ":-", "en")
       except sqlite3.IntegrityError:
         print("usr already in db so i'll be using their data (help)")
 
@@ -88,7 +88,7 @@ class Promobuttons(discord.ui.View):
       super().__init__()
     
       url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://example.com/"
+      url_bot = "https://example.com/" #Incoming youtube tutorial :)
   
       self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
       self.add_item(discord.ui.Button(label='Make your own snipe bot!', url=url_bot))
@@ -119,24 +119,49 @@ async def on_message_delete(message):
 @bot.command(aliases=['resend', 'snipe', 'recibir'])
 async def getmsg(ctx):
   try:
-    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, prefix=":-", lang="en")
+    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
-    print("usr already in db so i'll be using their data (help)")
+    print("usr already in db so i'll be using their data (getmsg)")
 
   async with db.get_db(f"{PATH}/cogs/data/users.db") as c:    
     c.execute("SELECT lang FROM user WHERE user_id = ?;",(ctx.author.id,))
     lang = c.fetchone()[0]
-    
+
   try:        
-      contents, author, channel_name, attch, time = sniped[ctx.channel.id]
+      contents, target, channel_name, attch, time = sniped[ctx.channel.id]
   except KeyError:
     if lang != 'es':
       return await ctx.channel.send("Nothing to snipe")
     return await ctx.channel.send("Nada que disparar")
 
+  try:
+    await db.insert_user(ctx.guild.id, target.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
+  except sqlite3.IntegrityError:
+    print("target already in db so i'll be using their data (getmsg)")
+
+    async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
+      c.execute("SELECT access FROM user WHERE user_id = ?;",(target.id,))
+      access_target = c.fetchone()[0]
+      c.execute("SELECT access FROM user WHERE user_id = ?;",(ctx.author.id,))
+      access_author = c.fetchone()[0]
+
+
+  # Checks if the user has sniping enabled.
+  # This could be 1 sentence w/ an "or" operator but I want it to be more specific.
+  if access_target == 0:
+    if lang != 'es':
+      return await ctx.channel.send("The target has disabled sniping in their `settings`")
+    return await ctx.channel.send("El objetivo ha deshabilitado el francotirador en su `configuración`")
+  elif access_author == 0:
+    if lang != 'es':
+      return await ctx.channel.send("You have disabled sniping in your `settings`")
+    return await ctx.channel.send("Has deshabilitado el francotirador en la `configuración`")
+  
+
+
     
   sniped_embed = discord.Embed(description=contents, color=discord.Color.blurple(), timestamp=time)
-  sniped_embed.set_author(name=f'{author.name}#{author.discriminator}',icon_url=author.display_avatar.url)
+  sniped_embed.set_author(name=f'{target.name}#{target.discriminator}',icon_url=target.display_avatar.url)
 
   if attch:
     if attch[0].proxy_url.endswith("mp4"):
@@ -168,9 +193,9 @@ async def on_message_edit(message_before,message_after):
 @bot.command(aliases=['snipeedit', 'recibiredit'])
 async def getedit(ctx):
   try:
-    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, prefix=":-", lang="en")
+    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
-    print("usr already in db so i'll be using their data (help)")
+    print("usr already in db so i'll be using their data (getedit)")
 
   
   async with db.get_db(f"{PATH}/cogs/data/users.db") as c:    
@@ -178,15 +203,37 @@ async def getedit(ctx):
     lang = c.fetchone()[0]
     
   try:
-    contents, author, channel_name,time = sniped_edit[ctx.channel.id]
+    contents, target, channel_name, time = sniped_edit[ctx.channel.id]
   except KeyError:
     if lang != 'es':
       return await ctx.channel.send("No recently edited message detected")
     return await ctx.channel.send("No hay ningún mensaje editado recientemente")
+
+
+  try:
+    await db.insert_user(ctx.guild.id, target.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
+  except sqlite3.IntegrityError:
+    print("target already in db so i'll be using their data (getmsg)")
+
+
+  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:    
+    c.execute("SELECT access FROM user WHERE user_id = ?;",(target.id,))
+    access_target = c.fetchone()[0]
+    c.execute("SELECT access FROM user WHERE user_id = ?;",(ctx.author.id,))
+    access_author = c.fetchone()[0]
+
     
+  if access_target == 0:
+    if lang != 'es':
+      return await ctx.channel.send("The target has disabled sniping in their `settings`")
+    return await ctx.channel.send("El objetivo ha deshabilitado el francotirador en su `configuración`")
+  elif access_author == 0:
+    if lang != 'es':
+      return await ctx.channel.send("You have disabled sniping in your `settings`")
+    return await ctx.channel.send("Has deshabilitado el francotirador en la `configuración`")
     
   getEdit_embed = discord.Embed(description=contents, color=discord.Color.blurple(), timestamp=time)
-  getEdit_embed.set_author(name=f'{author.name}#{author.discriminator}',icon_url=author.display_avatar)
+  getEdit_embed.set_author(name=f'{target.name}#{target.discriminator}',icon_url=target.display_avatar)
 
   if lang != 'es':
     getEdit_embed.set_footer(text=f'edited in {channel_name} ')
@@ -222,7 +269,7 @@ bot.remove_command('help')
 
 async def help(ctx):
   try:
-    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, prefix=":-", lang="en")
+    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
     print("usr already in db so i'll be using their data (help)")
 
@@ -236,7 +283,7 @@ async def help(ctx):
     es_cog = bot.get_cog("espanol") # Gets the class "espanol" in langs.py
     return await es_cog.sp_help(ctx)
 
-      
+
   help_Embed = discord.Embed(title='Elite Sniper\'s commands',
   description=f"<:flag_ea:987500016690163782> **Espanol**\n¿Hablas Español? `{prefix}ajustes 2 es`"+
               f"\n---------------\n"+
@@ -258,7 +305,7 @@ async def help(ctx):
 @bot.command(aliases=['ajustes'])
 async def settings(ctx, num=0, *, change=None):
   try:
-    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, prefix=":-", lang="en")
+    await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
     print("usr already in db so i'll be using their data (settings)")
 
@@ -267,12 +314,14 @@ async def settings(ctx, num=0, *, change=None):
     prefix = c.fetchone()[0]
     c.execute("SELECT lang FROM user WHERE user_id = ?;", (ctx.author.id,))
     lang = c.fetchone()[0]
+    c.execute("SELECT access FROM user WHERE user_id = ?;", (ctx.author.id,))
+    access_author = c.fetchone()[0]
 
   if lang == "es":
     es_cog = bot.get_cog("espanol")
     return await es_cog.sp_settings(ctx, num, change)
 
-  if num > 0 and num <=2:
+  if num > 0 and num <=3:
     
     #Change prefix
     if num == 1 and change is not None and len(change) <=3 and len(change) > 0:
@@ -284,17 +333,31 @@ async def settings(ctx, num=0, *, change=None):
     elif num == 2 and change == 'es':
       await db.update_lang(ctx.author.id, change)
       return await ctx.channel.send("✅")
+
+    #Disable Sniping
+    elif num == 3 and change == 'off':
+      await db.update_access(ctx.author.id, 0)
+      return await ctx.channel.send("You will no longer have your messages sniped & You can no longer snipe messages.")
+    
     else:
       if num == 1:
         return await ctx.channel.send("Prefix must be greater than 0 and less than 4.")
       elif num == 2:
         return await ctx.channel.send("I don't have that language or you're already using it.")
+      elif num == 3 and change == 'on' and access_author == 0:
+        await db.update_access(ctx.author.id, 1)
+        return await ctx.channel.send("You can now snipe deleted messages!")
       else:
         return await ctx.channel.send("You're not using this command correctly")
     
   settings_em = discord.Embed(title="Settings", description=f"Use `{prefix}settings (settingNum) (input)`. ", color=0x459fa5)
   settings_em.add_field(name="<:white_small_square:987778113599574047> 1. Change Prefix", value=f"└ Change the way you interact with `commands` | eg: `{prefix}settings 1 pls`")
   settings_em.add_field(name="<:white_small_square:987778113599574047> 2. Change Language", value=f"└ Change your current `language` | eg: `{prefix}settings 2 es`")
+  if access_author == 0:
+    #Snipe is disabled - show X
+    settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usage", value=f"└ If disabled, your messages cannot be sniped and you cannot snipe other messages as well. | eg: `{prefix}settings 3 on` | Currently: **DISABLED**")
+  
+  settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usage", value=f"└ If disabled, your messages will not be sniped and you cannot snipe other messages as well. | eg: `{prefix}settings 3 off` | Currently: **ENABLED**")
   settings_em.set_footer(text="Prefix length must be less than 4 characters and greater than 0.")
 
   await ctx.send(embed=settings_em)
@@ -310,8 +373,12 @@ async def settings(ctx, num=0, *, change=None):
 
 
 
+# - - Full transparency here
+# This shows me only the data in the database.
+# Server id, Userid, most used commands, Prefix & language.
 
 @bot.command()
+@commands.check(is_owner)
 async def view(ctx, member: discord.Member = None):
   if member is not None:
     async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
@@ -332,27 +399,10 @@ async def view(ctx, member: discord.Member = None):
 #  - - - - - - LEAVE GUILD - - - - - - -  #
 
 
-
 @bot.command()
 @commands.check(is_owner)
-async def leave(ctx, *, guild_name):
-
-    try:
-        guildid = int(guild_name)
-    except:
-        await ctx.send("Invalid guild: failed to convert to int")
-    try:
-        guild = bot.get_guild(guildid)
-    except:
-        await ctx.send("Invalid guild")
-    try:
-        await guild.leave()
-        await ctx.send(f"left {guild.name}")
-    except:
-        await ctx.send("Error leaving")
-
-
-
+async def lev(ctx):
+  await ctx.guild.leave()
 
 
 
