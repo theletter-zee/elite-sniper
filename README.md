@@ -35,7 +35,7 @@ This is where Elite Sniper comes in! Elite Sniper uses Discord's own API to capt
 <h1> 🤨 What is the purpose? </h1>
 
 There is a popular demand for snipe bots among users and since snipe bots are nearing their end in terms of
-discord's new message content policy, I wanted to make this as ethical as possible and for anyone hoping to create their own snipe bot for their server.
+discord's new message content policy, I wanted to make this as ethical as possible and make it for anyone hoping to create their own snipe bot for their server.
 
 <img src="https://i.imgur.com/gV34gxM.png" title="every snipe bot ever"/>
 
