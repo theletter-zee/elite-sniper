@@ -18,7 +18,7 @@ https://discord.gg/k3mF2nhX3K
 ▫️ **:-getmsg** <br>
 └ Gets the most recently deleted `message` | alias: `snipe`, `resend` <br>
 ▫️ **:-getedit** <br>
-└ Gets the most recently edited `message` | alias: `snipeedit`
+└ Gets the most recently edited `message` | alias: `snipeedit` <br>
 ▫️ **:-settings** <br>
 └ Change your prefix and `more` | alias: `None`
 
