@@ -1,6 +1,6 @@
 # Elite Sniper
 <img src="https://imgur.com/mwGHTPv.png" title="elitesniper toplogo"/>
-A basic discord snipe bot with custom prefix and language (español) support using discord.py 2.0a
+The most ethical discord snipe bot with custom prefixs and language (español) support using discord.py 2.0.0a
 <hr>
 
 # Invites #
@@ -19,6 +19,8 @@ https://discord.gg/k3mF2nhX3K
 └ Gets the most recently deleted `message` | alias: `snipe`, `resend` <br>
 ▫️ **:-getedit** <br>
 └ Gets the most recently edited `message` | alias: `snipeedit`
+▫️ **:-settings** <br>
+└ Change your prefix and `more` | alias: `None`
 
 
 <h1> 🤔 How does it work? </h1>
@@ -33,7 +35,9 @@ This is where Elite Sniper comes in! Elite Sniper uses Discord's own API to capt
 <h1> 🤨 What is the purpose? </h1>
 
 There is a popular demand for snipe bots among users and since snipe bots are nearing their end in terms of
-discord's new message content policy, I wanted to make this for anyone hoping to create their own snipe bot for their server.
+discord's new message content policy, I wanted to make this as ethical as possible and for anyone hoping to create their own snipe bot for their server.
+
+<img src="https://i.imgur.com/gV34gxM.png" title="every snipe bot ever"/>
 
 
 <h1> 📜 Terms of Serivce </h1>
@@ -44,7 +48,8 @@ discord's new message content policy, I wanted to make this for anyone hoping to
 <br>
 <h2> Termination </h2>
 
-You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people.
+You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people and will
+delete any message that a user has sniped from you.
 
 
 <h1> ✉️ Privacy </h1>
