@@ -375,21 +375,24 @@ async def settings(ctx, num=0, *, change=None):
   settings_em = discord.Embed(title="Settings", description=f"Use `{prefix}settings (settingNum) (input)`. ", color=0x459fa5)
   settings_em.add_field(name="<:white_small_square:987778113599574047> 1. Change Prefix", value=f"└ Change the way you interact with `commands` | eg: `{prefix}settings 1 pls`")
   settings_em.add_field(name="<:white_small_square:987778113599574047> 2. Change Language", value=f"└ Change your current `language` | eg: `{prefix}settings 2 es`")
+  
   if access_author == 0:
     #Snipe is disabled - show X
     settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usage", value=f"└ If disabled, your messages cannot be sniped and you cannot snipe other messages as well. | eg: `{prefix}usage on` | Currently: **DISABLED**")
-  
-  settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usage", value=f"└ If disabled, your messages will not be sniped and you cannot snipe other messages as well. | eg: `{prefix}usage off` | Currently: **ENABLED**")
-  settings_em.set_footer(text="Prefix length must be less than 4 characters and greater than 0.")
+    settings_em.set_footer(text="Prefix length must be less than 4 characters and greater than 0.")
+    return await ctx.send(embed=settings_em)
+  else:
+    settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usage", value=f"└ If disabled, your messages will not be sniped and you cannot snipe other messages as well. | eg: `{prefix}usage off` | Currently: **ENABLED**")
+    settings_em.set_footer(text="Prefix length must be less than 4 characters and greater than 0.")
 
-  await ctx.send(embed=settings_em)
-
+    await ctx.send(embed=settings_em)
 
 
 
 
 
 @bot.command(aliases=['uso'])
+@cooldown(1,86400,BucketType.user)
 async def usage(ctx, *, mode):
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
@@ -448,14 +451,27 @@ async def usage(ctx, *, mode):
   else:
     await ctx.channel.send("Check settings for more info on how to use this command.")
 
-    
 
 
 
 
 
-    
+@usage.error
+async def tasks_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
+        await ctx.send(embed=cooldown_embed)
+    else:
+        raise error
 
+
+
+@bot.command()
+async def view(ctx):
+  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
+      c.execute("SELECT * FROM user WHERE user_id = ?;", (ctx.author.id,))
+      resul = c.fetchone()
+  print(resul)
 
 
 #  - - - - - - LEAVE GUILD - - - - - - -  #

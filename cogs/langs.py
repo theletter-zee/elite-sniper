@@ -87,14 +87,18 @@ class espanol(commands.Cog):
     settings_em = discord.Embed(title="Ajustes", description=f"Usas `{prefix}ajustes (ajustesNúm) (tuAporte)`. ", color=0x459fa5)
     settings_em.add_field(name="<:white_small_square:987778113599574047> 1. Cambiar Prefijo", value=f"└ Cambiar tu `comandos` | eg: `{prefix}ajustes 1 pls`")
     settings_em.add_field(name="<:white_small_square:987778113599574047> 2. Cambiar Idioma", value=f"└ Cambiar tu `idioma` | eg: `{prefix}ajustes 2 en`")
+    
     if access_author == 0:
       #Snipe es deshabilitado - show X
       settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usar", value=f"└ Si está deshabilitado, sus mensajes no se dispararán y tampoco podrá disparar otros mensajes. | eg: `{prefix}uso on` | Actualmente: **DESHABILITADO**")
+      settings_em.set_footer(text="El prefijo debe ser menor que 4 y mayor que 0")
+      return await ctx.send(embed=settings_em)
+    else:
+
+      settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usar", value=f"└ Si está deshabilitado, sus mensajes no se dispararán y tampoco podrá disparar otros mensajes. | eg: `{prefix}uso off` | Actualmente: **PERMITIR**")
+      settings_em.set_footer(text="El prefijo debe ser menor que 4 y mayor que 0")
     
-    settings_em.add_field(name="<:white_small_square:987778113599574047> 3. Usar", value=f"└ Si está deshabilitado, sus mensajes no se dispararán y tampoco podrá disparar otros mensajes. | eg: `{prefix}uso off` | Actualmente: **PERMITIR**")
-    settings_em.set_footer(text="El prefijo debe ser menor que 4 y mayor que 0")
-    
-    await ctx.send(embed=settings_em)
+      await ctx.send(embed=settings_em)
 
 
 
@@ -147,7 +151,7 @@ class espanol(commands.Cog):
       await db.update_access(ctx.author.id, 1)
       return await ctx.channel.send("¡ahora puedes disparar mensajes eliminados!")
     else:
-      await ctx.channel.send("¡ahora puedes disparar mensajes eliminados!.")
+      await ctx.channel.send("Compruebe la configuración para obtener más información.")
 
     
 async def setup(bot):
