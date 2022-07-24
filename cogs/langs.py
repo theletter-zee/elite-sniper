@@ -21,7 +21,7 @@ class Promobuttons(discord.ui.View):
       super().__init__()
     
       url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://example.com/"
+      url_bot = "https://github.com/theletter-zee/snipe-bot"
   
       self.add_item(discord.ui.Button(label='Votar en Top.gg!', url=url_top))
       self.add_item(discord.ui.Button(label='crea tu propio bot de snipe!', url=url_bot))

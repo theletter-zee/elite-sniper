@@ -89,7 +89,7 @@ class Promobuttons(discord.ui.View):
       super().__init__()
     
       url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://example.com/" #Incoming youtube tutorial :)
+      url_bot = "https://github.com/theletter-zee/snipe-bot" #Incoming youtube tutorial :)
   
       self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
       self.add_item(discord.ui.Button(label='Make your own snipe bot!', url=url_bot))
@@ -466,12 +466,7 @@ async def tasks_error(ctx, error):
 
 
 
-@bot.command()
-async def view(ctx):
-  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
-      c.execute("SELECT * FROM user WHERE user_id = ?;", (ctx.author.id,))
-      resul = c.fetchone()
-  print(resul)
+
 
 
 #  - - - - - - LEAVE GUILD - - - - - - -  #
