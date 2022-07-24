@@ -66,7 +66,7 @@ delete any message that a user has sniped from you.
 
 ▫️ **Channel id & Message id** <br>
 └ Similar to your server id and message id, these are both useless on their own. <br>
-They are however useful for the bot in order to get rid of your sniped messages if you decide that you no longer want to use the service. Your channel id and message id is stored in that json file so that if you ever want to get rid of those sniped embeds of yours, the bot will red the json and remove all of your sniped messages along with your place in the json file. <br>
+They are however useful for the bot in order to get rid of your sniped messages if you decide that you no longer want to use the service. Your channel id and message id is stored in that json file so that if you ever want to get rid of those sniped embeds of yours, the bot will read the json and remove all of your sniped messages along with your place in the json file. <br>
 
 The reason why I stress this so much is because I want give users who are in a private server, closure. Knowing that by just having their channel id and message id, isn't enough to create an invite to their server.
 Let's say for example we were to click on a message link from a server that we weren't in such as this: <br>
