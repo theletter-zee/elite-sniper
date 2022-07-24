@@ -71,7 +71,7 @@ They are however useful for the bot in order to get rid of your sniped messages 
 The reason why I stress this so much is because I want give users who are in a private server, closure. Knowing that by just having their channel id and message id, isn't enough to create an invite to their server.
 Let's say for example we were to click on a message link from a server that we weren't in such as this: <br>
 
-<img src="https://https://i.imgur.com/wtZWqCr.png" title="Discord links broken down"/> 
+<img src="https://i.imgur.com/wtZWqCr.png" title="Discord links broken down"/> <br>
 
 In the screenshot you can see 1. The server id 2. The channel id 3. The message id (in that order) <br>
 Now this is a public server, so if you entered the server id you should get some information if you looked it up. However the same wouldn't apply for a private server. <br>
