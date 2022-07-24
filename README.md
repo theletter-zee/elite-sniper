@@ -54,7 +54,7 @@ delete any message that a user has sniped from you.
 
 <h1> ✉️ Privacy </h1>
 
-<h2> What information is collected? </h2>
+<h2> What information is used? </h2>
 
 
 ▫️ **Server id** <br>
@@ -62,6 +62,27 @@ delete any message that a user has sniped from you.
 
 ▫️ **User id** <br>
 └ Your user id is public to anyone that comes in contact with you or simply see you on their side menu. To get someone's user id you can enable it in the advanced settings. For developers, it's a great way to manage how you interact with their bot. **What do I use it for? :** I use it for assigning your custom prefix and your chosen language. <br>
+
+
+▫️ **Channel id & Message id** <br>
+└ Similar to your server id and message id, these are both useless on their own. <br>
+They are however useful for the bot in order to get rid of your sniped messages if you decide that you no longer want to use the service. Your channel id and message id is stored in that json file so that if you ever want to get rid of those sniped embeds of yours, the bot will red the json and remove all of your sniped messages along with your place in the json file. <br>
+
+The reason why I stress this so much is because I want give users who are in a private server, closure. Knowing that by just having their channel id and message id, isn't enough to create an invite to their server.
+Let's say for example we were to click on a message link from a server that we weren't in such as this: <br>
+
+<img src="https://https://i.imgur.com/wtZWqCr.png" title="Discord links broken down"/> <br>
+
+In the screenshot you can see 1. The server id 2. The channel id 3. The message id (in that order) <br>
+Now this is a public server, so if you entered the server id you should get some information if you looked it up. However the same wouldn't apply for a private server. <br>
+
+If you aren't in the server and you click on that link, this message will appear: <br>
+
+<img src="https://i.imgur.com/wtZWqCr.png" title="No access image"/>
+
+
+
+
 
 **I do not store any of your messages** That would be a clear invasion of privacy, and I would get in trouble.
 
