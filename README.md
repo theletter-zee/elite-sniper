@@ -58,7 +58,7 @@ delete any message that a user has sniped from you.
 
 
 ▫️ **Server id** <br>
-└ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **| What do I use it for? :** (1) It shows me what servers are the most 'reliant' on the bot. It tells me if the servers that use this service are typically big or small. (2) Custom server prefixes tend to be the popular option and currently, I'm testing out individual prefixes. If I end up going with server prefixes then server id's is what i'd have to use. <br>
+└ If your server isn't publicly advertised, even if you have 500 members just by sharing the server link, the id is useless on it's own and can't be tracked. However, if your server is advertised publicly, such as on websites, then entering the server id in a search engine would show results sometimes. This ONLY works if you've advertised it publicly. **| What do I use it for? :** When a user decides to terminate their service,in order for a full termination to be possible, the bot needs the server id so it can delete all their sniped embeds across servers.<br>
 
 ▫️ **User id** <br>
 └ Your user id is public to anyone that comes in contact with you or simply see you on their side menu. To get someone's user id you can enable it in the advanced settings. For developers, it's a great way to manage how you interact with their bot. **What do I use it for? :** I use it for assigning your custom prefix and your chosen language. <br>

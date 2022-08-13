@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 import os
 import sqlite3
-import json
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -34,6 +33,32 @@ async def c_table():
     ) """)
 
 
+async def c_embed():
+  async with get_db(f"{PATH}/data/embed.db") as c:
+    c.execute("""CREATE TABLE IF NOT EXISTS embed (
+        server_id JSON DEFAULT('[]'),
+        channel_id JSON DEFAULT('[]'),
+        msg_id JSON DEFAULT('[]'),
+        user_id INT,
+        PRIMARY KEY(user_id)
+    ) """)
+
+
+
+
+async def insert_embed(user_id):
+  async with get_db(f"{PATH}/data/embed.db") as c:
+    c.execute("INSERT INTO embed(user_id) VALUES (?)",
+            (user_id,))
+
+
+
+async def update_embed(server_id, channel_id, msg_id, usr_id):
+  async with get_db(f"{PATH}/data/embed.db") as c: #No SQL Injection? 🥺
+    c.execute(f"UPDATE embed SET server_id = json_insert(server_id, '$[#]', {server_id}) WHERE user_id = {usr_id};")
+    c.execute(f"UPDATE embed SET channel_id = json_insert(channel_id, '$[#]',{channel_id}) WHERE user_id = {usr_id};")
+    c.execute(f"UPDATE embed SET msg_id = json_insert(msg_id, '$[#]', {msg_id}) WHERE user_id = {usr_id};")
+
 
 
 
@@ -41,6 +66,8 @@ async def insert_user(server_id, user_id, getmsg, getedit, help, topgg, bots, ac
   async with get_db(f"{PATH}/data/users.db") as c:
     c.execute("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (server_id, user_id, getmsg, getedit, help, topgg, bots, access, prefix, lang,))
+
+
 
 
 
@@ -71,61 +98,3 @@ async def update_prefix(usr_name, prefix):
 async def update_lang(usr_name, lang):
   async with get_db(f"{PATH}/data/users.db") as c:
     c.execute("UPDATE user SET lang = ? WHERE user_id = ?;", (lang, usr_name,))
-
-
-
-
-
-
-
-
-
-
-#--------------Json-------------#
-
-#Credit to "Code With Swastik" for some of the formatting
-
-async def embed_check(target, channel):
-  embeds = await read_db()
-  with open(PATH+"/data/embed.json", 'r') as f:
-      embeds = json.load(f)
-
-  if str(target) in embeds:
-    return False
-  elif str(channel) in str(target):
-    add_chan(target, channel)
-  else:
-
-    embeds[str(target)] = {}
-    embeds[str(target)][str(channel)] = {}
-    embeds[str(target)][str(channel)]['msg_id'] = []
-
-
-    with open(PATH+"/data/embed.json",'w') as f:
-      json.dump(embeds, f, indent=2)
-
-
-
-async def read_db():
-  with open(PATH+"/data/embed.json", 'r') as f:
-    embeds = json.load(f)
-  return embeds
-
-
-
-async def update_db(target, chan, msg_id):
-  embeds = await read_db()
-  embeds[str(target)][str(chan)]['msg_id'].append(msg_id)
-
-  with open(PATH+"/data/embed.json",'w') as f:
-    json.dump(embeds, f, indent=2)
-
-
-async def add_chan(target, channel):
-  embeds = await read_db()
-  embeds[str(target)][str(channel)] = {}
-  embeds[str(target)][str(channel)]['msg_id'] = []
-
-  
-  with open(PATH+"/data/embed.json", 'w') as f:
-      json.dump(embeds, f, indent=2)
