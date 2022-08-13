@@ -44,6 +44,11 @@ async def c_embed():
     ) """)
 
 
+async def delete_embed(usr_id):
+  async with get_db(f"{PATH}/data/embed.db") as c:
+    c.execute("DELETE FROM embed WHERE user_id = ?", (usr_id,))
+
+
 
 
 async def insert_embed(user_id):

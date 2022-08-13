@@ -408,12 +408,10 @@ async def usage(ctx, *, mode):
         c.execute("SELECT msg_id FROM embed WHERE user_id = ?;",(ctx.author.id,))
         msg_id = c.fetchone()
 
-      #REMEMBERRRRRRRRR TO CHECKKKK this
       if msg_id is None:
         await db.update_access(ctx.author.id, 0)
         return await ctx.send(await lang_cog.usage_trans(lang=lang, section='usageOff'))
 
-      # ADD loading emoji or smthing like await ctx.send(content=<:loading:>)
       for serv in server_id[0].replace('[', '').replace(']', '').split(','):
 
         for chan in channel_id[0].replace('[', '').replace(']', '').split(','):
@@ -424,12 +422,12 @@ async def usage(ctx, *, mode):
             def is_msg(m):
               return m.id == int(m_id)
 
-            await bot.get_guild(int(serv))
-            channel = await bot.get_channel(int(chan))
+            await bot.fetch_guild(int(serv))
+            channel = await bot.fetch_channel(int(chan))
             await channel.purge(check=is_msg)
-        
 
       await db.update_access(ctx.author.id, 0)
+      await db.delete_embed(ctx.author.id)
       return await ctx.reply(await lang_cog.usage_trans(lang=lang, section='usageOff'))
   elif mode == 'on':
     if access_author == 1:
