@@ -9,7 +9,6 @@ from discord.ext.commands import (CommandNotFound,CommandOnCooldown,MissingRequi
 import os
 import sqlite3
 import asyncio
-import json
 
 from cogs import my_db as db
 
@@ -218,6 +217,8 @@ async def getedit(ctx):
   async with db.get_db(f"{PATH}/cogs/data/users.db") as c:    
     c.execute("SELECT lang FROM user WHERE user_id = ?;",(ctx.author.id,))
     lang = c.fetchone()[0]
+
+  lang_cog = bot.get_cog('espanol')
     
   try:
     contents, target, channel_name, time = sniped_edit[ctx.channel.id]
@@ -237,7 +238,6 @@ async def getedit(ctx):
     c.execute("SELECT access FROM user WHERE user_id = ?;",(ctx.author.id,))
     access_author = c.fetchone()[0]
 
-  lang_cog = bot.get_cog('espanol')
     
   if access_target == 0:
     return await ctx.send(await lang_cog.getedit_trans(lang=lang, section='access_target'))
