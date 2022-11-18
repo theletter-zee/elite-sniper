@@ -1,1 +1,1 @@
-placeholder
+Typically this folder would contain data from SQLITE but I don't store those on github, so it ignores the folder completely. I don't want it to do that, so I have this file here.
