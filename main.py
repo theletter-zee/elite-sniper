@@ -1,20 +1,26 @@
-#For future reference, Will look into logging.
-
 import discord
 from discord.ext import commands
 from discord.ext.commands import Cog, BucketType
 from discord.ext.commands import command, cooldown
 from discord.ext.commands import (CommandNotFound,CommandOnCooldown,MissingRequiredArgument)
 
+
 import os
 import sqlite3
 import asyncio
 
 from cogs import my_db as db
+from dotenv import load_dotenv
+
 
 PATH = os.path.dirname(os.path.realpath(__file__))
+os.chdir(PATH)
+
+load_dotenv()
 
 
+
+TOKEN = os.getenv('TOKEN')
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
@@ -89,10 +95,10 @@ class Promobuttons(discord.ui.View):
       super().__init__()
     
       url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://discord.gg/k3mF2nhX3K" 
+      url_bot = "https://github.com/theletter-zee/snipe-bot/tree/master" 
   
       self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
-      self.add_item(discord.ui.Button(label='Support Server!', url=url_bot))
+      self.add_item(discord.ui.Button(label='Make Your Own!', url=url_bot))
   
 
 
@@ -132,6 +138,8 @@ async def on_message_edit(message_before, message_after):
 
 @bot.hybrid_command(aliases=['resend', 'snipe', 'recibir'])
 async def getmsg(ctx):
+  """Send the most recently deleted message!"""
+
   #Checks if the person snipiping is in the db
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
@@ -208,6 +216,7 @@ async def getmsg(ctx):
 
 @bot.hybrid_command(aliases=['snipeedit', 'recibiredit'])
 async def getedit(ctx):
+  """Send the most recently edited message"""
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
@@ -272,13 +281,12 @@ async def getedit(ctx):
 
 
 bot.remove_command('help')
-bot.remove_command('getimg')
-bot.remove_command('snreport')
 
 
 
 @bot.hybrid_command()
 async def help(ctx):
+  """Clarification on how commands work"""
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
@@ -312,6 +320,7 @@ async def help(ctx):
 
 @bot.hybrid_command(aliases=['ajustes'])
 async def settings(ctx, num=0, *, change=None):
+  """Modify the way you interact with the bot"""
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
@@ -370,6 +379,7 @@ async def settings(ctx, num=0, *, change=None):
 @bot.hybrid_command(aliases=['usar'])
 @cooldown(1,86400,BucketType.user)
 async def usage(ctx, *, mode):
+  """If disabled, your messages cannot be sniped"""
   try:
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
@@ -457,6 +467,7 @@ async def tasks_error(ctx, error):
 
 @bot.hybrid_command()
 async def bing(ctx):
+  """Mr. Trump!?"""
   await ctx.send("bong!")
 
 
@@ -476,6 +487,57 @@ async def leave(ctx):
   
 
 
+from typing import Optional
+from typing import Literal
+from discord.ext.commands import Greedy
+
+#  - - - - - -  Sync command (by Umbra) - - - - - - -  #
+@bot.command()
+@commands.guild_only()
+@commands.is_owner()
+async def sync(
+  ctx, guilds: Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None):
+    """
+    :-sync -> global sync
+    :-sync ~ -> sync current guild
+    :-sync * -> copies all global app commands to current guild and syncs
+    :-sync ^ -> clears all commands from the current guild target and syncs (removes guild commands)
+    :-sync id_1 id_2 -> syncs guilds with id 1 and 2
+    """
+    if not guilds:
+        if spec == "~":
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "*":
+            ctx.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "^":
+            ctx.bot.tree.clear_commands(guild=ctx.guild)
+            await ctx.bot.tree.sync(guild=ctx.guild)
+            synced = []
+        else:
+            synced = await ctx.bot.tree.sync()
+
+        await ctx.send(
+            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+        )
+        return
+
+    ret = 0
+    for guild in guilds:
+        try:
+            await ctx.bot.tree.sync(guild=guild)
+        except discord.HTTPException:
+            pass
+        else:
+            ret += 1
+
+    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+
+
+
+
+
+
 # - - - - -   - - - - -  LOAD COGS  - - - - -  - - - - - #
 
 async def main():
@@ -485,7 +547,7 @@ async def main():
         await bot.load_extension(f'cogs.{filename[:-3]}')
     await db.c_table()
     await db.c_embed()
-    await bot.start(os.getenv('TOKEN'))
+    await bot.start(TOKEN)
 
 
 asyncio.run(main())
