@@ -1,12 +1,10 @@
+import asyncio
+import os
+
 import discord
 from discord.ext import commands
 
-
-import os
-import asyncio
-
 from cogs import my_db as db
-
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
