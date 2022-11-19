@@ -31,21 +31,19 @@ async def is_owner(ctx):
 
 prefix_cache = {}
 async def usr_prefix(bot, message):
-  main_prefix = ":-"
+    if message.author.id in prefix_cache:
+      # Using prefix in cache
+      return prefix_cache[message.author.id]
 
-  if message.author.id in prefix_cache:
-    # Using prefix in cache
-    return prefix_cache[message.author.id]
+    async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
+      c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
+      prefix = c.fetchone()
 
-  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
-    c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
-    prefix = c.fetchone()
-    
-  if prefix is not None:
-    #generating cache 
-    prefix_cache[message.author.id] = prefix[0]
-    return prefix[0]
-  return main_prefix
+    if prefix is not None:
+      #generating cache 
+      prefix_cache[message.author.id] = prefix[0]
+      return prefix[0]
+    return ":-"
 
 
 
