@@ -451,11 +451,10 @@ async def usage(ctx, *, mode):
 
 @usage.error
 async def tasks_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
-        await ctx.send(embed=cooldown_embed)
-    else:
+    if not isinstance(error, commands.CommandOnCooldown):
         raise error
+    cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
+    await ctx.send(embed=cooldown_embed)
 
 
 
