@@ -1,17 +1,15 @@
-import discord
-from discord.ext import commands
-from discord.ext.commands import Cog, BucketType
-from discord.ext.commands import command, cooldown
-from discord.ext.commands import (CommandNotFound,CommandOnCooldown,MissingRequiredArgument)
-
-
+import asyncio
 import os
 import sqlite3
-import asyncio
 
-from cogs import my_db as db
+import discord
+from discord.ext import commands
+from discord.ext.commands import (BucketType, Cog, CommandNotFound,
+                                  CommandOnCooldown, MissingRequiredArgument,
+                                  command, cooldown)
 from dotenv import load_dotenv
 
+from cogs import my_db as db
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 os.chdir(PATH)
@@ -485,9 +483,10 @@ async def leave(ctx):
   
 
 
-from typing import Optional
-from typing import Literal
+from typing import Literal, Optional
+
 from discord.ext.commands import Greedy
+
 
 #  - - - - - -  Sync command (by Umbra) - - - - - - -  #
 @bot.command()
