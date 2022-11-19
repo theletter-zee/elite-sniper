@@ -8,8 +8,7 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 @asynccontextmanager
 async def get_db(db_name):
   conn = sqlite3.connect(db_name)
-  c = conn.cursor()
-  yield c
+  yield conn.cursor()
   conn.commit()
   conn.close()
 
