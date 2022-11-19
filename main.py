@@ -81,7 +81,7 @@ class MyBot(commands.Bot):
 
     await bot.process_commands(message)
 
-bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=f":-help or @Elite Sniper"))
+bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=":-help or @Elite Sniper"))
 
 
 
