@@ -1,17 +1,15 @@
-import discord
-from discord.ext import commands
-from discord.ext.commands import Cog, BucketType
-from discord.ext.commands import command, cooldown
-from discord.ext.commands import (CommandNotFound,CommandOnCooldown,MissingRequiredArgument)
-
-
+import asyncio
 import os
 import sqlite3
-import asyncio
 
-from cogs import my_db as db
+import discord
+from discord.ext import commands
+from discord.ext.commands import (BucketType, Cog, CommandNotFound,
+                                  CommandOnCooldown, MissingRequiredArgument,
+                                  command, cooldown)
 from dotenv import load_dotenv
 
+from cogs import my_db as db
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 os.chdir(PATH)
@@ -31,21 +29,19 @@ async def is_owner(ctx):
 
 prefix_cache = {}
 async def usr_prefix(bot, message):
-  main_prefix = ":-"
+    if message.author.id in prefix_cache:
+      # Using prefix in cache
+      return prefix_cache[message.author.id]
 
-  if message.author.id in prefix_cache:
-    # Using prefix in cache
-    return prefix_cache[message.author.id]
+    async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
+      c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
+      prefix = c.fetchone()
 
-  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
-    c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
-    prefix = c.fetchone()
-    
-  if prefix is not None:
-    #generating cache 
-    prefix_cache[message.author.id] = prefix[0]
-    return prefix[0]
-  return main_prefix
+    if prefix is not None:
+      #generating cache 
+      prefix_cache[message.author.id] = prefix[0]
+      return prefix[0]
+    return ":-"
 
 
 
@@ -85,7 +81,7 @@ class MyBot(commands.Bot):
 
     await bot.process_commands(message)
 
-bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=f":-help or @Elite Sniper"))
+bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=":-help or @Elite Sniper"))
 
 
 
@@ -455,11 +451,10 @@ async def usage(ctx, *, mode):
 
 @usage.error
 async def tasks_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
-        await ctx.send(embed=cooldown_embed)
-    else:
+    if not isinstance(error, commands.CommandOnCooldown):
         raise error
+    cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
+    await ctx.send(embed=cooldown_embed)
 
 
 
@@ -487,9 +482,10 @@ async def leave(ctx):
   
 
 
-from typing import Optional
-from typing import Literal
+from typing import Literal, Optional
+
 from discord.ext.commands import Greedy
+
 
 #  - - - - - -  Sync command (by Umbra) - - - - - - -  #
 @bot.command()

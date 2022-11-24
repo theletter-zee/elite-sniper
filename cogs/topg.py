@@ -1,8 +1,8 @@
-import discord
-from discord.ext import commands
+import os
 
 import dbl
-import os
+import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 
 os.path.abspath(os.path.join(r'cogs', os.pardir))
