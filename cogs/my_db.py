@@ -80,11 +80,11 @@ async def insert_user(server_id, user_id, getmsg, getedit, help, topgg, bots, ac
 
 async def update_msg(usr_name):
   async with get_db(f"{PATH}/data/users.db") as c:
-    c.execute("UPDATE user SET getmsg = getmsg + 1  WHERE user_id = ?;", (usr_name, ))
+    c.execute("UPDATE user SET getmsg = getmsg + 1  WHERE user_id = ?;", (usr_name,))
     
 async def update_edit(usr_name):
   async with get_db(f"{PATH}/data/users.db") as c:
-    c.execute("UPDATE user SET getedit = getedit  + 1  WHERE user_id = ?;", (usr_name, ))
+    c.execute("UPDATE user SET getedit = getedit  + 1  WHERE user_id = ?;", (usr_name,))
 
 
 async def update_help(usr_name):
