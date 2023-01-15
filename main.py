@@ -309,7 +309,7 @@ async def help(ctx):
   help_Embed.add_field(name=await lang_cog.help_trans(lang=lang, section='getedit_name'), value=await lang_cog.help_trans(lang=lang, section='getedit_value'), inline=True)
   help_Embed.add_field(name=await lang_cog.help_trans(lang=lang, section='settings_name'), value=await lang_cog.help_trans(lang=lang, section='settings_value'), inline=True)
  
-  await ctx.channel.send(embed=help_Embed, view=Promobuttons()) #.channel is needed or else it wont send
+  await ctx.send(embed=help_Embed, view=Promobuttons()) #.channel is needed or else it wont send
   await db.update_help(ctx.author.id) 
 
 
