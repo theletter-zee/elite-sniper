@@ -534,15 +534,23 @@ async def sync(
 
 
 # - - - - -   - - - - -  LOAD COGS  - - - - -  - - - - - #
+import time
 
 async def main():
-  async with bot:  
-    for filename in os.listdir('./cogs'):
-      if filename != "my_db.py" and filename.endswith('.py'):
-        await bot.load_extension(f'cogs.{filename[:-3]}')
-    await db.c_table()
-    await db.c_embed()
-    await bot.start(TOKEN)
+    try:    
+      async with bot:  
+        for filename in os.listdir('./cogs'):
+          if filename != "my_db.py" and filename.endswith('.py'):
+            await bot.load_extension(f'cogs.{filename[:-3]}')
+        await db.c_table()
+        await db.c_embed()
+        keep_alive()
+        await bot.start(TOKEN)
+          
+    except discord.errors.HTTPException:
+        os.system("echo RATELIMITED, TRYING AGAIN")
+        time.sleep(25)
+        os.system("kill 1")
 
 
 asyncio.run(main())
