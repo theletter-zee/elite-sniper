@@ -93,7 +93,7 @@ class Promobuttons(discord.ui.View):
       super().__init__()
     
       url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://github.com/theletter-zee/snipe-bot/tree/master" 
+      url_bot = "https://www.youtube.com/watch?v=s-PigCgsh7Q" 
   
       self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
       self.add_item(discord.ui.Button(label='Make Your Own!', url=url_bot))
