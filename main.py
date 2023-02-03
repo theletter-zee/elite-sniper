@@ -430,8 +430,8 @@ async def usage(ctx, *, mode):
             def is_msg(m):
               return m.id == int(m_id)
 
-            await bot.fetch_guild(int(serv))
-            channel = await bot.fetch_channel(int(chan))
+            await bot.get_guild(int(serv))
+            channel = await bot.get_channel(int(chan))
             await channel.purge(check=is_msg)
 
       await db.update_access(ctx.author.id, 0)
