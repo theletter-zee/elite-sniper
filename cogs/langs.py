@@ -1,10 +1,12 @@
-import asyncio
-import os
-
 import discord
 from discord.ext import commands
 
+
+import os
+import asyncio
+
 from cogs import my_db as db
+
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -71,6 +73,7 @@ class espanol(commands.Cog):
       'desc_a': "<:flag_ea:987500016690163782> **Espanol**\n¿Hablas Español? ",
       'desc_b': " ".join(["If you used the correct command and you still don't see the deleted message/image ",
          "then most likely Discord cleared their cache and the content is gone for good."]),
+      'ch_lang': "ajustes 2 es",
 
       # - - Embed Values - - #
       'getmsg_name': "<:white_small_square:987778113599574047> 1. getmsg",
@@ -88,6 +91,7 @@ class espanol(commands.Cog):
       'title': "Elite Sniper's commandos",
       'desc_a': "<:flag_us:996986962844069968> **English**\nSpeak English? ",
       'desc_b': "Si tú usaste el correcto commando y estas no mensaje, entonces Discord eliminado el caché.",
+      'ch_lang': "settings 2 en",
 
       # - - Embed Values - - #
       'getmsg_name': "<:white_small_square:987778113599574047> 1. recibir",
