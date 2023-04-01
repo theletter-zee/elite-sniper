@@ -1,15 +1,20 @@
-import asyncio
-import os
-import sqlite3
+#pip install -U git+https://github.com/Rapptz/discord.py
 
+from webserver import keep_alive
 import discord
 from discord.ext import commands
-from discord.ext.commands import (BucketType, Cog, CommandNotFound,
-                                  CommandOnCooldown, MissingRequiredArgument,
-                                  command, cooldown)
-from dotenv import load_dotenv
+from discord.ext.commands import Cog, BucketType
+from discord.ext.commands import command, cooldown
+from discord.ext.commands import (CommandNotFound,CommandOnCooldown,MissingRequiredArgument)
+
+
+import os
+import sqlite3
+import asyncio
 
 from cogs import my_db as db
+from dotenv import load_dotenv
+
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 os.chdir(PATH)
@@ -29,21 +34,21 @@ async def is_owner(ctx):
 
 prefix_cache = {}
 async def usr_prefix(bot, message):
-    main_prefix = ":-"
-    if message.author.id in prefix_cache:
-      # Using prefix in cache
-      return prefix_cache[message.author.id]
+  main_prefix = ":-"
 
-    async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
-      c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
-      prefix = c.fetchone()
+  if message.author.id in prefix_cache:
+    # Using prefix in cache
+    return prefix_cache[message.author.id]
 
-    if prefix is not None:
-      #generating cache 
-      prefix_cache[message.author.id] = prefix[0]
-      return prefix[0]
+  async with db.get_db(f"{PATH}/cogs/data/users.db") as c:
+    c.execute("SELECT prefix FROM user WHERE user_id = ?;", (message.author.id,))
+    prefix = c.fetchone()
     
-    return main_prefix
+  if prefix is not None:
+    #generating cache 
+    prefix_cache[message.author.id] = prefix[0]
+    return prefix[0]
+  return main_prefix
 
 
 
@@ -83,7 +88,7 @@ class MyBot(commands.Bot):
 
     await bot.process_commands(message)
 
-bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=":-help or @Elite Sniper"))
+bot = MyBot(command_prefix=usr_prefix, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=f":-help or @Elite Sniper"))
 
 
 
@@ -299,7 +304,7 @@ async def help(ctx):
   lang_cog = bot.get_cog('espanol')
 
   help_Embed = discord.Embed(title=await lang_cog.help_trans(lang=lang, section='title'),
-  description=await lang_cog.help_trans(lang=lang, section='desc_a') + f"`{prefix}ajustes 2 es`"+
+  description=await lang_cog.help_trans(lang=lang, section='desc_a') + f"`{prefix}{await lang_cog.help_trans(lang=lang, section='ch_lang')}`"+
               f"\n---------------\n"+
               await lang_cog.help_trans(lang=lang, section='desc_b'),
   color=0x459fa5)
@@ -344,6 +349,10 @@ async def settings(ctx, num=0, *, change=None):
       
     #Change language
     elif num == 2 and change == 'es':
+      await db.update_lang(ctx.author.id, change)
+      return await ctx.send("✅")
+
+    elif num == 2 and change == 'en':
       await db.update_lang(ctx.author.id, change)
       return await ctx.send("✅")
 
@@ -407,35 +416,7 @@ async def usage(ctx, *, mode):
     except asyncio.TimeoutError:
       await ctx.send(await lang_cog.usage_trans(lang=lang, section='reactError'))
     else:
-
-      async with db.get_db(f"{PATH}/cogs/data/embed.db") as c:
-        c.execute("SELECT server_id FROM embed WHERE user_id = ?;",(ctx.author.id,))
-        server_id = c.fetchone()
-        c.execute("SELECT channel_id FROM embed WHERE user_id = ?;",(ctx.author.id,))
-        channel_id = c.fetchone()
-        c.execute("SELECT msg_id FROM embed WHERE user_id = ?;",(ctx.author.id,))
-        msg_id = c.fetchone()
-
-      if msg_id is None:
-        await db.update_access(ctx.author.id, 0)
-        return await ctx.send(await lang_cog.usage_trans(lang=lang, section='usageOff'))
-
-      for serv in server_id[0].replace('[', '').replace(']', '').split(','):
-
-        for chan in channel_id[0].replace('[', '').replace(']', '').split(','):
-
-          for m_id in msg_id[0].replace('[', '').replace(']', '').split(','):
-
-
-            def is_msg(m):
-              return m.id == int(m_id)
-
-            await bot.get_guild(int(serv))
-            channel = await bot.get_channel(int(chan))
-            await channel.purge(check=is_msg)
-
       await db.update_access(ctx.author.id, 0)
-      await db.delete_embed(ctx.author.id)
       return await ctx.reply(await lang_cog.usage_trans(lang=lang, section='usageOff'))
   elif mode == 'on':
     if access_author == 1:
@@ -453,10 +434,11 @@ async def usage(ctx, *, mode):
 
 @usage.error
 async def tasks_error(ctx, error):
-    if not isinstance(error, commands.CommandOnCooldown):
+    if isinstance(error, commands.CommandOnCooldown):
+        cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
+        await ctx.send(embed=cooldown_embed)
+    else:
         raise error
-    cooldown_embed = discord.Embed(title='Slow Down!',description='You have to wait **{:.2f}**s  to use this command again.'.format(error.retry_after))
-    await ctx.send(embed=cooldown_embed)
 
 
 
@@ -481,10 +463,12 @@ async def leave(ctx):
 
 
 
- 
-from typing import Literal, Optional
-from discord.ext.commands import Greedy
+  
 
+
+from typing import Optional
+from typing import Literal
+from discord.ext.commands import Greedy
 
 #  - - - - - -  Sync command (by Umbra) - - - - - - -  #
 @bot.command()
@@ -554,3 +538,4 @@ async def main():
 
 
 asyncio.run(main())
+
