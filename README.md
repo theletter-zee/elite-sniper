@@ -48,8 +48,7 @@ discord's new message content policy, I wanted to make this as ethical as possib
 <br>
 <h2> Termination </h2>
 
-You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people and will
-delete any message that a user has sniped from you.
+You’re free to opt out of getting your message sniped by another user at any time. You can do this by navigating to `:-settings`. This would also restrict you from sniping messages from other people.
 
 
 <h1> ✉️ Privacy </h1>
