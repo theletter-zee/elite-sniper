@@ -97,10 +97,10 @@ class Promobuttons(discord.ui.View):
   def __init__(self):
       super().__init__()
     
-      url_top = "https://top.gg/bot/800136653041303553/vote"
-      url_bot = "https://www.youtube.com/watch?v=s-PigCgsh7Q" 
+      #url_top = "https://top.gg/bot/800136653041303553/vote"
+      url_bot = "https://github.com/theletter-zee/snipe-bot/tree/master" 
   
-      self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
+      #self.add_item(discord.ui.Button(label='Vote on Top.gg!', url=url_top))
       self.add_item(discord.ui.Button(label='Make Your Own!', url=url_bot))
   
 
@@ -126,14 +126,14 @@ sniped_edit = {}
 
 @bot.listen()
 async def on_message_delete(message):
-  sniped[message.channel.id] = [message.content, message.author, message.channel.name, message.attachments, message.created_at]
+  sniped[message.channel.id] = [message.content, message.author, message.channel.name, message.attachments, message.stickers, message.created_at]
   
 
 
 
 @bot.listen()
 async def on_message_edit(message_before, message_after):
-    sniped_edit[message_before.channel.id] = [message_before.content, message_before.author, message_before.channel.name, message_before.created_at]
+    sniped_edit[message_before.channel.id] = [message_before.content, message_before.author, message_after.content, message_before.channel.name, message_before.created_at]
 
 
 
@@ -155,7 +155,7 @@ async def getmsg(ctx):
     lang = c.fetchone()[0]
 
   try:
-    contents, target, channel_name, attch, time = sniped[ctx.channel.id]
+    contents, target, channel_name, attch, stickers, time = sniped[ctx.channel.id]
   except KeyError:
     return await ctx.send(await bot.get_cog("espanol").getmsg_trans(lang=lang, section='error'))
 
@@ -199,7 +199,10 @@ async def getmsg(ctx):
 
     else:
       sniped_embed.set_image(url=attch[0].proxy_url)
-
+        
+  if stickers:
+    for sticker in stickers:
+      sniped_embed.set_image(url=sticker.url)
 
   sniped_embed.set_footer(text=f'{channel_name} ')
   msg = await ctx.send(embed=sniped_embed)
@@ -224,6 +227,7 @@ async def getedit(ctx):
     await db.insert_user(ctx.guild.id, ctx.author.id, 0, 0, 0, 0, 0, 1, prefix=":-", lang="en")
   except sqlite3.IntegrityError:
     print("usr already in db so i'll be using their data (getedit)")
+    
 
   
   async with db.get_db(f"{PATH}/cogs/data/users.db") as c:    
@@ -233,8 +237,8 @@ async def getedit(ctx):
   lang_cog = bot.get_cog('espanol')
     
   try:
-    contents, target, channel_name, time = sniped_edit[ctx.channel.id]
-  except KeyError:
+    original, target, edited, channel_name, time = sniped_edit[ctx.channel.id]
+  except KeyError as e:
     return await ctx.send(await lang_cog.getedit_trans(lang=lang, section='error'))
 
 
@@ -255,12 +259,14 @@ async def getedit(ctx):
     return await ctx.send(await lang_cog.getedit_trans(lang=lang, section='access_target'))
   elif access_author == 0:
     return await ctx.send(await lang_cog.getedit_trans(lang=lang, section='access_author'))
-    
-  getEdit_embed = discord.Embed(description=contents, color=discord.Color.blurple(), timestamp=time)
-  getEdit_embed.set_author(name=f'{target}',icon_url=target.display_avatar)
 
-  getEdit_embed.set_footer(text=f'{channel_name}')
-  await ctx.send(embed=getEdit_embed)
+  embed = discord.Embed(color=discord.Color.blurple(), timestamp=time)
+  embed.set_author(name=target.name, icon_url=target.display_avatar.url)
+
+  embed.add_field(name="Edited to", value=edited, inline=False)
+  embed.add_field(name="Original", value=original, inline=False)
+  embed.set_footer(text=f'{channel_name}')
+  await ctx.send(embed=embed)
   return await db.update_edit(ctx.author.id)
 
     
